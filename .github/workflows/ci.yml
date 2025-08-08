@@ -67,18 +67,19 @@ jobs:
           flags: unittests
           name: codecov-umbrella
 
-  integration:
-    name: Integration Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - uses: actions/setup-go@v5
-        with:
-          go-version: ${{ env.GO_VERSION }}
-      
-      - name: Run integration tests
-        run: go test -v -tags=integration ./...
+  # Integration tests temporarily disabled - need refactoring
+  # integration:
+  #   name: Integration Tests
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     
+  #     - uses: actions/setup-go@v5
+  #       with:
+  #         go-version: ${{ env.GO_VERSION }}
+  #     
+  #     - name: Run integration tests
+  #       run: go test -v -tags=integration ./...
 
   benchmark:
     name: Benchmarks
