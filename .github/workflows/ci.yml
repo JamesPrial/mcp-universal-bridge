@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: ['1.20', '1.21', '1.22']
+        go: ['1.21', '1.22', '1.23']
     steps:
       - uses: actions/checkout@v4
       
@@ -93,13 +93,14 @@ jobs:
         run: |
           go test -bench=. -benchmem -run=^$ ./... | tee benchmark.txt
           
-      - name: Store benchmark result
-        uses: benchmark-action/github-action-benchmark@v1
-        with:
-          tool: 'go'
-          output-file-path: benchmark.txt
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-push: false
+      # Benchmark storage disabled until gh-pages branch is created
+      # - name: Store benchmark result
+      #   uses: benchmark-action/github-action-benchmark@v1
+      #   with:
+      #     tool: 'go'
+      #     output-file-path: benchmark.txt
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     auto-push: false
 
   build:
     name: Build

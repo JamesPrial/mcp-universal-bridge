@@ -62,7 +62,7 @@ func TestSSEClient_Send(t *testing.T) {
 	
 	// Fill the outbox
 	for i := 0; i < 100; i++ {
-		client.Send(msg)
+		_ = client.Send(msg)
 	}
 	
 	err = client.Send(msg)
@@ -407,7 +407,7 @@ func TestSSEClient_RateLimiter(t *testing.T) {
 	
 	// Should be rate limited after first request
 	for i := 0; i < 5; i++ {
-		client.rateLimiter.Wait(context.Background())
+		_ = client.rateLimiter.Wait(context.Background())
 	}
 	
 	elapsed := time.Since(start)
@@ -427,7 +427,7 @@ func BenchmarkSSEClient_Send(b *testing.B) {
 	
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		client.Send(msg)
+		_ = client.Send(msg)
 	}
 }
 
@@ -456,7 +456,7 @@ func BenchmarkCircuitBreaker(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {
 		i := 0
 		for pb.Next() {
-			cb.Call(func() error {
+			_ = cb.Call(func() error {
 				if i%10 == 0 {
 					return fmt.Errorf("error")
 				}
