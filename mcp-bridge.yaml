@@ -1,0 +1,28 @@
+# Example configuration for MCP Universal Bridge
+
+server:
+  url: "http://localhost:3000"
+  transport: "auto"  # auto-detect, or specify: sse, http, websocket
+  
+  # Optional authentication
+  # auth:
+  #   type: "bearer"
+  #   token: "your-api-token"
+
+performance:
+  buffer_size: 1024           # Message buffer size
+  max_message_size: 10485760  # 10MB max message size
+  worker_pool_size: 10        # Number of worker goroutines
+  connection_pool: 5          # HTTP connection pool size
+
+retry:
+  max_attempts: 10              # Maximum retry attempts
+  initial_delay: 100ms         # Initial retry delay
+  max_delay: 30s              # Maximum retry delay
+  multiplier: 2.0             # Exponential backoff multiplier
+
+monitoring:
+  metrics_port: 9090          # Prometheus metrics (0 to disable)
+  health_port: 8080          # Health check endpoint (0 to disable)
+  log_level: "info"          # debug, info, warn, error
+  log_format: "console"      # console or json
