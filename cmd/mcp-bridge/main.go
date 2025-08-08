@@ -159,7 +159,7 @@ func testCmd() *cobra.Command {
 	}
 	
 	cmd.Flags().StringVarP(&serverURL, "server", "s", "", "MCP server URL (required)")
-	cmd.MarkFlagRequired("server")
+	_ = cmd.MarkFlagRequired("server")
 	
 	return cmd
 }
