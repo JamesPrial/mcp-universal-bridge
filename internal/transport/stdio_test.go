@@ -79,7 +79,7 @@ func TestStdioHandler_Send(t *testing.T) {
 	
 	// Fill the outbox to test buffer full error
 	for i := 0; i < 100; i++ {
-		handler.Send(msg)
+		_ = handler.Send(msg)
 	}
 	
 	err = handler.Send(msg)
@@ -148,7 +148,7 @@ func TestStdioHandler_ReadLoop(t *testing.T) {
 	// Write valid message
 	msg := `{"jsonrpc":"2.0","method":"test","params":null}`
 	go func() {
-		writer.Write([]byte(msg + "\n"))
+		_, _ = writer.Write([]byte(msg + "\n"))
 	}()
 	
 	// Wait for message
@@ -163,7 +163,7 @@ func TestStdioHandler_ReadLoop(t *testing.T) {
 	
 	// Test invalid JSON
 	go func() {
-		writer.Write([]byte("invalid json\n"))
+		_, _ = writer.Write([]byte("invalid json\n"))
 	}()
 	
 	// Should not receive invalid message
@@ -176,7 +176,7 @@ func TestStdioHandler_ReadLoop(t *testing.T) {
 	
 	// Test empty line
 	go func() {
-		writer.Write([]byte("\n"))
+		_, _ = writer.Write([]byte("\n"))
 	}()
 	
 	select {
@@ -267,7 +267,7 @@ func TestStdioHandler_ConcurrentAccess(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	
-	handler.Start(ctx)
+	_ = handler.Start(ctx)
 	
 	var wg sync.WaitGroup
 	
@@ -281,7 +281,7 @@ func TestStdioHandler_ConcurrentAccess(t *testing.T) {
 				Method:  "test",
 				ID:      jsonRawMessage(id),
 			}
-			handler.Send(msg)
+			_ = handler.Send(msg)
 		}(i)
 	}
 	
@@ -349,7 +349,7 @@ func TestStdioHandler_LargeMessage(t *testing.T) {
 func BenchmarkStdioHandler_Send(b *testing.B) {
 	handler := NewStdioHandler()
 	ctx := context.Background()
-	handler.Start(ctx)
+	_ = handler.Start(ctx)
 	
 	msg := &mcp.Message{
 		JSONRPC: "2.0",
@@ -366,7 +366,7 @@ func BenchmarkStdioHandler_Send(b *testing.B) {
 func BenchmarkStdioHandler_Concurrent(b *testing.B) {
 	handler := NewStdioHandler()
 	ctx := context.Background()
-	handler.Start(ctx)
+	_ = handler.Start(ctx)
 	
 	msg := &mcp.Message{
 		JSONRPC: "2.0",
@@ -375,7 +375,7 @@ func BenchmarkStdioHandler_Concurrent(b *testing.B) {
 	
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			handler.Send(msg)
+			_ = handler.Send(msg)
 		}
 	})
 }
